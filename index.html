@@ -1,42 +1,41 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CALISTHENICS | Coaching</title>
 
-\<html lang="en">
-\<head>
-\<meta charset="UTF-8">
-\<meta name="viewport" content="width=device-width, initial-scale=1">
-\<title>CALISTHENICS | Coaching\</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-\<script src="[https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2](https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2)">\</script>
-
-\<style>
-\* { box-sizing: border-box; }
+<style>
+* { box-sizing: border-box; }
 
 body {
-&#x20;   margin: 0;
-&#x20;   background: #101214;
-&#x20;   color: white;
-&#x20;   font-family: Arial, sans-serif;
+    margin: 0;
+    background: #101214;
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
 header {
-&#x20;   padding: 22px 8%;
-&#x20;   border-bottom: 1px solid #30363a;
-&#x20;   display: flex;
-&#x20;   justify-content: space-between;
-&#x20;   align-items: center;
+    padding: 22px 8%;
+    border-bottom: 1px solid #30363a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
-&#x20;   font-size: 23px;
-&#x20;   font-weight: 900;
+    font-size: 23px;
+    font-weight: 900;
 }
 
 .logo span { color: #a3e635; }
 
 .container {
-&#x20;   max-width: 1000px;
-&#x20;   margin: 40px auto;
-&#x20;   padding: 20px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
 }
 
 h1 { font-size: 35px; }
@@ -44,238 +43,1169 @@ h1 { font-size: 35px; }
 .subtitle, .muted { color: #92999e; }
 
 .panel {
-&#x20;   background: #191d20;
-&#x20;   border: 1px solid #30363a;
-&#x20;   border-radius: 12px;
-&#x20;   padding: 24px;
-&#x20;   margin-bottom: 20px;
+    background: #191d20;
+    border: 1px solid #30363a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
 }
 
 input, select {
-&#x20;   width: 100%;
-&#x20;   padding: 14px;
-&#x20;   margin: 8px 0;
-&#x20;   background: #101214;
-&#x20;   border: 1px solid #363d42;
-&#x20;   border-radius: 7px;
-&#x20;   color: white;
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    background: #101214;
+    border: 1px solid #363d42;
+    border-radius: 7px;
+    color: white;
 }
 
 button {
-&#x20;   padding: 12px 18px;
-&#x20;   border: none;
-&#x20;   border-radius: 7px;
-&#x20;   background: #a3e635;
-&#x20;   color: #101214;
-&#x20;   font-weight: bold;
-&#x20;   cursor: pointer;
-&#x20;   margin: 5px 3px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 7px;
+    background: #a3e635;
+    color: #101214;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px 3px;
 }
 
 .secondary {
-&#x20;   background: #30383d;
-&#x20;   color: white;
+    background: #30383d;
+    color: white;
 }
 
 .hidden { display: none !important; }
 
 .error {
-&#x20;   color: #ff7777;
-&#x20;   white-space: pre-wrap;
-&#x20;   overflow-wrap: anywhere;
+    color: #ff7777;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 .success { color: #a3e635; }
 
 .exercise {
-&#x20;   background: #252b2f;
-&#x20;   padding: 15px;
-&#x20;   border-radius: 8px;
-&#x20;   margin: 10px 0;
+    background: #252b2f;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
 }
 
 .exercise label {
-&#x20;   display: flex;
-&#x20;   align-items: center;
-&#x20;   gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .exercise input {
-&#x20;   width: 20px;
-&#x20;   accent-color: #a3e635;
+    width: 20px;
+    accent-color: #a3e635;
 }
 
 .done {
-&#x20;   text-decoration: line-through;
-&#x20;   opacity: .5;
+    text-decoration: line-through;
+    opacity: .5;
 }
 
 .progress-bg {
-&#x20;   background: #343b40;
-&#x20;   height: 9px;
-&#x20;   border-radius: 10px;
-&#x20;   margin-top: 12px;
+    background: #343b40;
+    height: 9px;
+    border-radius: 10px;
+    margin-top: 12px;
 }
 
 .progress {
-&#x20;   background: #a3e635;
-&#x20;   height: 9px;
-&#x20;   border-radius: 10px;
+    background: #a3e635;
+    height: 9px;
+    border-radius: 10px;
 }
 
 .day-card {
-&#x20;   background: #252b2f;
-&#x20;   padding: 16px;
-&#x20;   margin: 10px 0;
-&#x20;   border-radius: 9px;
-&#x20;   border-left: 4px solid #a3e635;
+    background: #252b2f;
+    padding: 16px;
+    margin: 10px 0;
+    border-radius: 9px;
+    border-left: 4px solid #a3e635;
 }
 
 .day-card h3 {
-&#x20;   margin-top: 0;
-&#x20;   color: #a3e635;
+    margin-top: 0;
+    color: #a3e635;
 }
 
 .rest-day {
-&#x20;   border-left-color: #92999e;
+    border-left-color: #92999e;
 }
 
 .schedule-item {
-&#x20;   margin: 8px 0;
-&#x20;   padding: 12px;
-&#x20;   background: #191d20;
-&#x20;   border-radius: 8px;
+    margin: 8px 0;
+    padding: 12px;
+    background: #191d20;
+    border-radius: 8px;
 }
 
 .schedule-item button {
-&#x20;   margin-top: 8px;
+    margin-top: 8px;
 }
-\</style>
+</style>
+</head>
 
-\</head>
+<body>
 
-\<body>
+<header>
+    <div class="logo">CALIS<span>THENICS.</span></div>
+    <button id="logout" class="secondary hidden">LOG OUT</button>
+</header>
 
-\<header>
-&#x20;   \<div class="logo">CALIS\<span>THENICS.\</span>\</div>
-&#x20;   \<button id="logout" class="secondary hidden">LOG OUT\</button>
-\</header>
+<div class="container">
 
-\<div class="container">
+<section id="loginSection">
+    <h1>WELCOME.</h1>
+    <p class="subtitle">Your calisthenics journey starts here.</p>
 
-\<section id="loginSection">
-&#x20;   \<h1>WELCOME.\</h1>
-&#x20;   \<p class="subtitle">Your calisthenics journey starts here.\</p>
+    <div class="panel">
+        <h2>Login / Register</h2>
+        <input id="email" type="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
 
-```
-<div class="panel">
-    <h2>Login / Register</h2>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
+        <button id="loginBtn">LOGIN</button>
+        <button id="registerBtn" class="secondary">CREATE ACCOUNT</button>
 
-    <button id="loginBtn">LOGIN</button>
-    <button id="registerBtn" class="secondary">CREATE ACCOUNT</button>
+        <p id="authMessage" class="muted"></p>
+    </div>
+</section>
 
-    <p id="authMessage" class="muted"></p>
+<section id="dashboard" class="hidden">
+
+    <h1 id="welcome">DASHBOARD</h1>
+    <p id="roleText" class="subtitle"></p>
+    <p id="dashboardMessage" class="error"></p>
+
+    <!-- COACH DASHBOARD -->
+
+    <section id="coachPanel" class="hidden">
+
+        <div class="panel">
+            <h2>Create Workout</h2>
+            <input id="workoutTitle" placeholder="Workout name">
+            <button id="createWorkoutBtn">CREATE WORKOUT</button>
+        </div>
+
+        <div class="panel">
+            <h2>Add Exercise</h2>
+            <select id="workoutSelect"></select>
+            <input id="exerciseName" placeholder="Exercise name">
+            <input id="sets" type="number" min="1" placeholder="Sets">
+            <input id="reps" placeholder="Reps (e.g. 12 or 30 sec)">
+            <button id="addExerciseBtn">ADD EXERCISE</button>
+        </div>
+
+        <div class="panel">
+            <h2>Assign Workout To Client</h2>
+            <select id="clientSelect"></select>
+            <select id="assignWorkout"></select>
+            <button id="assignWorkoutBtn">ASSIGN WORKOUT</button>
+        </div>
+
+        <div class="panel">
+            <h2>Weekly Training Planner</h2>
+            <p class="muted">Create a weekly workout schedule for your clients.</p>
+
+            <select id="scheduleClient">
+                <option value="">Select client</option>
+            </select>
+
+            <select id="scheduleDay">
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <option value="7">Sunday</option>
+            </select>
+
+            <select id="scheduleWorkout">
+                <option value="">Select workout</option>
+            </select>
+
+            <button id="restDayBtn" class="secondary">SET REST DAY</button>
+            <button id="saveScheduleBtn">SAVE TRAINING DAY</button>
+
+            <p id="scheduleMessage" class="muted"></p>
+        </div>
+
+        <div class="panel">
+            <h2>Client Weekly Schedules</h2>
+            <div id="coachSchedules"></div>
+        </div>
+
+        <div class="panel">
+            <h2>Client Progress</h2>
+            <div id="clientProgress"></div>
+        </div>
+
+    </section>
+
+    <!-- CLIENT DASHBOARD -->
+
+    <section id="clientPanel" class="hidden">
+
+        <div class="panel">
+            <h2>MY WEEKLY PLAN</h2>
+            <p class="muted">Your coach's weekly training schedule.</p>
+            <div id="weeklyPlan"></div>
+        </div>
+
+        <div class="panel">
+            <h2>MY WORKOUTS</h2>
+            <p class="muted">Your progress resets every Monday.</p>
+            <div id="myWorkouts"></div>
+        </div>
+
+    </section>
+
+</section>
 </div>
-```
 
-\</section>
+<script>
 
-\<section id="dashboard" class="hidden">
+// ==========================================
+// SUPABASE CONFIGURATION
+// ==========================================
 
-```
-<h1 id="welcome">DASHBOARD</h1>
-<p id="roleText" class="subtitle"></p>
-<p id="dashboardMessage" class="error"></p>
+const SUPABASE_URL =
+"https://uaxfxkkpfnxfgjdwilko.supabase.co";
 
-<!-- COACH DASHBOARD -->
+// Replace this with your original publishable key.
+const SUPABASE_KEY =
+"PASTE_YOUR_EXISTING_PUBLISHABLE_KEY_HERE";
 
-<section id="coachPanel" class="hidden">
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-    <div class="panel">
-        <h2>Create Workout</h2>
-        <input id="workoutTitle" placeholder="Workout name">
-        <button id="createWorkoutBtn">CREATE WORKOUT</button>
-    </div>
 
-    <div class="panel">
-        <h2>Add Exercise</h2>
-        <select id="workoutSelect"></select>
-        <input id="exerciseName" placeholder="Exercise name">
-        <input id="sets" type="number" min="1" placeholder="Sets">
-        <input id="reps" placeholder="Reps (e.g. 12 or 30 sec)">
-        <button id="addExerciseBtn">ADD EXERCISE</button>
-    </div>
+// ==========================================
+// VARIABLES
+// ==========================================
 
-    <div class="panel">
-        <h2>Assign Workout To Client</h2>
-        <select id="clientSelect"></select>
-        <select id="assignWorkout"></select>
-        <button id="assignWorkoutBtn">ASSIGN WORKOUT</button>
-    </div>
+let user = null;
+let profile = null;
+let workouts = [];
+let loading = false;
 
-    <div class="panel">
-        <h2>Weekly Training Planner</h2>
-        <p class="muted">Create a weekly workout schedule for your clients.</p>
+const dayNames = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+];
 
-        <select id="scheduleClient">
-            <option value="">Select client</option>
-        </select>
+const $ = id => document.getElementById(id);
 
-        <select id="scheduleDay">
-            <option value="1">Monday</option>
-            <option value="2">Tuesday</option>
-            <option value="3">Wednesday</option>
-            <option value="4">Thursday</option>
-            <option value="5">Friday</option>
-            <option value="6">Saturday</option>
-            <option value="7">Sunday</option>
-        </select>
 
-        <select id="scheduleWorkout">
-            <option value="">Select workout</option>
-        </select>
+// ==========================================
+// WEEKLY RESET DATE
+// ==========================================
 
-        <button id="restDayBtn" class="secondary">SET REST DAY</button>
-        <button id="saveScheduleBtn">SAVE TRAINING DAY</button>
+function getWeekStart() {
 
-        <p id="scheduleMessage" class="muted"></p>
-    </div>
+    const date = new Date();
 
-    <div class="panel">
-        <h2>Client Weekly Schedules</h2>
-        <div id="coachSchedules"></div>
-    </div>
+    date.setHours(0, 0, 0, 0);
 
-    <div class="panel">
-        <h2>Client Progress</h2>
-        <div id="clientProgress"></div>
-    </div>
+    const day = date.getDay();
 
-</section>
+    const difference = day === 0 ? -6 : 1 - day;
 
-<!-- CLIENT DASHBOARD -->
+    date.setDate(date.getDate() + difference);
 
-<section id="clientPanel" class="hidden">
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const dayOfMonth = String(date.getDate()).padStart(2, "0");
 
-    <div class="panel">
-        <h2>MY WEEKLY PLAN</h2>
-        <p class="muted">Your coach's weekly training schedule.</p>
-        <div id="weeklyPlan"></div>
-    </div>
+    return `${year}-${month}-${dayOfMonth}`;
+}
 
-    <div class="panel">
-        <h2>MY WORKOUTS</h2>
-        <p class="muted">Your progress resets every Monday.</p>
-        <div id="myWorkouts"></div>
-    </div>
 
-</section>
-```
+// ==========================================
+// MESSAGES
+// ==========================================
 
-\</section>
-\</div>
+function showMessage(id, text, type = "error") {
+    $(id).textContent = text;
+    $(id).className = type;
+}
 
-\<script>  // ========================================== // SUPABASE CONFIGURATION // ==========================================  const SUPABASE_URL = "[https://uaxfxkkpfnxfgjdwilko.supabase.co](https://uaxfxkkpfnxfgjdwilko.supabase.co)";  // Paste your existing Supabase publishable key here. // Do not use your secret or service-role key. const SUPABASE_KEY = "sb_publishable_faulfh5FiEqNlLSWgpFv_A_ZspjYk1z
-\</body> \</html>
+function showError(error) {
+
+    return [
+        error.message || "Unknown error",
+        error.code ? "Code: " + error.code : "",
+        error.details || "",
+        error.hint || ""
+    ].filter(Boolean).join("\n");
+
+}
+
+
+// ==========================================
+// LOGIN
+// ==========================================
+
+async function login() {
+
+    const email = $("email").value.trim();
+    const password = $("password").value;
+
+    if (!email || !password) {
+        showMessage("authMessage", "Enter your email and password.");
+        return;
+    }
+
+    showMessage("authMessage", "Logging in...", "muted");
+
+    const { error } = await db.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if (error) {
+        showMessage("authMessage", showError(error));
+        return;
+    }
+
+    await loadApp();
+}
+
+
+// ==========================================
+// REGISTER
+// ==========================================
+
+async function register() {
+
+    const email = $("email").value.trim();
+    const password = $("password").value;
+
+    if (!email || !password) {
+        showMessage("authMessage", "Enter your email and password.");
+        return;
+    }
+
+    if (password.length < 8) {
+        showMessage("authMessage", "Password must be at least 8 characters.");
+        return;
+    }
+
+    showMessage("authMessage", "Creating account...", "muted");
+
+    const { data, error } = await db.auth.signUp({
+        email,
+        password
+    });
+
+    if (error) {
+        showMessage("authMessage", showError(error));
+        return;
+    }
+
+    if (data.session) {
+        showMessage("authMessage", "Account created!", "success");
+        await loadApp();
+    } else {
+        showMessage(
+            "authMessage",
+            "Account created! Check your email to confirm your account, then log in.",
+            "success"
+        );
+    }
+}
+
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+async function logout() {
+
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+        alert(showError(error));
+        return;
+    }
+
+    user = null;
+    profile = null;
+
+    $("dashboard").classList.add("hidden");
+    $("loginSection").classList.remove("hidden");
+    $("logout").classList.add("hidden");
+    $("coachPanel").classList.add("hidden");
+    $("clientPanel").classList.add("hidden");
+}
+
+
+// ==========================================
+// LOAD APPLICATION
+// ==========================================
+
+async function loadApp() {
+
+    if (loading) return;
+
+    loading = true;
+
+    try {
+
+        const { data, error: authError } =
+            await db.auth.getUser();
+
+        if (authError) throw authError;
+
+        user = data.user;
+
+        if (!user) {
+            $("dashboard").classList.add("hidden");
+            $("loginSection").classList.remove("hidden");
+            return;
+        }
+
+        const { data: p, error } = await db
+            .from("profiles")
+            .select("id,email,role")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        if (!p) {
+            throw new Error("No matching profile found.");
+        }
+
+        profile = p;
+
+        console.log("Logged in:", user.email);
+        console.log("Role:", profile.role);
+
+        $("loginSection").classList.add("hidden");
+        $("dashboard").classList.remove("hidden");
+        $("logout").classList.remove("hidden");
+
+        $("welcome").textContent =
+            "WELCOME, " + user.email.split("@")[0].toUpperCase();
+
+        if (profile.role === "coach") {
+
+            $("roleText").textContent = "COACH DASHBOARD";
+            $("coachPanel").classList.remove("hidden");
+            $("clientPanel").classList.add("hidden");
+
+            await loadCoach();
+
+        } else {
+
+            $("roleText").textContent = "YOUR TRAINING DASHBOARD";
+            $("clientPanel").classList.remove("hidden");
+            $("coachPanel").classList.add("hidden");
+
+            await loadClient();
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        $("dashboard").classList.add("hidden");
+        $("loginSection").classList.remove("hidden");
+
+        showMessage(
+            "authMessage",
+            "ERROR:\n" + showError(error)
+        );
+
+    } finally {
+        loading = false;
+    }
+}
+
+
+// ==========================================
+// COACH DASHBOARD
+// ==========================================
+
+async function loadCoach() {
+
+    const { data: w, error } = await db
+        .from("workouts")
+        .select("*")
+        .order("title");
+
+    if (error) throw error;
+
+    workouts = w || [];
+
+    $("workoutSelect").innerHTML = "";
+    $("assignWorkout").innerHTML = "";
+    $("scheduleWorkout").innerHTML =
+        '<option value="">Select workout</option>';
+
+    workouts.forEach(workout => {
+
+        $("workoutSelect").add(
+            new Option(workout.title, workout.id)
+        );
+
+        $("assignWorkout").add(
+            new Option(workout.title, workout.id)
+        );
+
+        $("scheduleWorkout").add(
+            new Option(workout.title, workout.id)
+        );
+
+    });
+
+    const { data: clients, error: clientError } = await db
+        .from("profiles")
+        .select("id,email")
+        .eq("role", "client");
+
+    if (clientError) throw clientError;
+
+    $("clientSelect").innerHTML = "";
+    $("scheduleClient").innerHTML =
+        '<option value="">Select client</option>';
+
+    (clients || []).forEach(client => {
+
+        $("clientSelect").add(
+            new Option(client.email, client.id)
+        );
+
+        $("scheduleClient").add(
+            new Option(client.email, client.id)
+        );
+
+    });
+
+    await showProgress();
+    await loadCoachSchedules();
+
+}
+
+
+// ==========================================
+// CREATE WORKOUT
+// ==========================================
+
+async function createWorkout() {
+
+    const title = $("workoutTitle").value.trim();
+
+    if (!title) {
+        alert("Enter a workout name.");
+        return;
+    }
+
+    const { error } = await db
+        .from("workouts")
+        .insert({
+            title,
+            created_by: user.id
+        });
+
+    if (error) {
+        alert(showError(error));
+        return;
+    }
+
+    $("workoutTitle").value = "";
+
+    await loadCoach();
+
+    alert("Workout created!");
+
+}
+
+
+// ==========================================
+// ADD EXERCISE
+// ==========================================
+
+async function addExercise() {
+
+    const workoutId = $("workoutSelect").value;
+    const name = $("exerciseName").value.trim();
+    const sets = Number($("sets").value);
+    const reps = $("reps").value.trim();
+
+    if (!workoutId || !name || !sets || !reps) {
+        alert("Fill in all exercise details.");
+        return;
+    }
+
+    const { error } = await db
+        .from("exercises")
+        .insert({
+            workout_id: workoutId,
+            name,
+            sets,
+            reps
+        });
+
+    if (error) {
+        alert(showError(error));
+        return;
+    }
+
+    $("exerciseName").value = "";
+    $("sets").value = "";
+    $("reps").value = "";
+
+    alert("Exercise added!");
+
+}
+
+
+// ==========================================
+// ASSIGN WORKOUT
+// ==========================================
+
+async function assignWorkout() {
+
+    const clientId = $("clientSelect").value;
+    const workoutId = $("assignWorkout").value;
+
+    if (!clientId || !workoutId) {
+        alert("Select a client and workout.");
+        return;
+    }
+
+    const { error } = await db
+        .from("assignments")
+        .insert({
+            workout_id: workoutId,
+            client_id: clientId,
+            assigned_by: user.id
+        });
+
+    if (error) {
+        alert(showError(error));
+        return;
+    }
+
+    alert("Workout assigned!");
+
+    await showProgress();
+
+}
+
+
+// ==========================================
+// SAVE WEEKLY TRAINING DAY
+// ==========================================
+
+async function saveTrainingDay(restDay = false) {
+
+    const clientId = $("scheduleClient").value;
+    const day = Number($("scheduleDay").value);
+
+    const workoutId = restDay
+        ? null
+        : $("scheduleWorkout").value;
+
+    if (!clientId) {
+        alert("Select a client.");
+        return;
+    }
+
+    if (!restDay && !workoutId) {
+        alert("Select a workout.");
+        return;
+    }
+
+    const { error } = await db
+        .from("training_schedule")
+        .upsert({
+            coach_id: user.id,
+            client_id: clientId,
+            day_of_week: day,
+            workout_id: workoutId,
+            is_rest_day: restDay
+        }, {
+            onConflict: "client_id,day_of_week"
+        });
+
+    if (error) {
+        alert(showError(error));
+        return;
+    }
+
+    showMessage(
+        "scheduleMessage",
+        "Training schedule saved!",
+        "success"
+    );
+
+    await loadCoachSchedules();
+
+}
+
+
+// ==========================================
+// COACH WEEKLY SCHEDULES
+// ==========================================
+
+async function loadCoachSchedules() {
+
+    const container = $("coachSchedules");
+
+    container.innerHTML = "Loading schedules...";
+
+    const { data: schedules, error } = await db
+        .from("training_schedule")
+        .select("*")
+        .eq("coach_id", user.id)
+        .order("day_of_week");
+
+    if (error) throw error;
+
+    container.innerHTML = "";
+
+    if (!schedules || schedules.length === 0) {
+        container.textContent = "No schedules created yet.";
+        return;
+    }
+
+    for (const schedule of schedules) {
+
+        const { data: client } = await db
+            .from("profiles")
+            .select("email")
+            .eq("id", schedule.client_id)
+            .maybeSingle();
+
+        let workoutName = "Rest Day";
+
+        if (!schedule.is_rest_day) {
+
+            const { data: workout } = await db
+                .from("workouts")
+                .select("title")
+                .eq("id", schedule.workout_id)
+                .maybeSingle();
+
+            workoutName = workout?.title || "Workout";
+
+        }
+
+        const card = document.createElement("div");
+        card.className = "schedule-item";
+
+        const title = document.createElement("strong");
+
+        title.textContent =
+            dayNames[schedule.day_of_week - 1] +
+            " — " + workoutName;
+
+        const clientText = document.createElement("p");
+        clientText.className = "muted";
+        clientText.textContent = client?.email || "Client";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "REMOVE";
+        deleteButton.className = "secondary";
+
+        deleteButton.onclick = async () => {
+
+            if (!confirm("Remove this scheduled day?")) return;
+
+            const { error } = await db
+                .from("training_schedule")
+                .delete()
+                .eq("id", schedule.id);
+
+            if (error) {
+                alert(showError(error));
+                return;
+            }
+
+            await loadCoachSchedules();
+
+        };
+
+        card.append(title, clientText, deleteButton);
+        container.append(card);
+
+    }
+
+}
+
+
+// ==========================================
+// CLIENT WEEKLY PLAN
+// ==========================================
+
+async function loadWeeklyPlan() {
+
+    const container = $("weeklyPlan");
+
+    container.innerHTML = "Loading weekly plan...";
+
+    const { data: schedules, error } = await db
+        .from("training_schedule")
+        .select("*")
+        .eq("client_id", user.id)
+        .order("day_of_week");
+
+    if (error) throw error;
+
+    container.innerHTML = "";
+
+    for (let day = 1; day <= 7; day++) {
+
+        const schedule = schedules?.find(
+            s => s.day_of_week === day
+        );
+
+        const card = document.createElement("div");
+        card.className = "day-card";
+
+        const heading = document.createElement("h3");
+        heading.textContent = dayNames[day - 1];
+
+        const detail = document.createElement("p");
+
+        if (!schedule) {
+
+            detail.textContent = "No workout scheduled";
+
+        } else if (schedule.is_rest_day) {
+
+            detail.textContent = "REST DAY";
+            card.classList.add("rest-day");
+
+        } else {
+
+            const { data: workout, error: workoutError } = await db
+                .from("workouts")
+                .select("title")
+                .eq("id", schedule.workout_id)
+                .maybeSingle();
+
+            if (workoutError) throw workoutError;
+
+            detail.textContent = workout?.title || "Workout";
+
+        }
+
+        card.append(heading, detail);
+        container.append(card);
+
+    }
+
+}
+
+
+// ==========================================
+// CLIENT PROGRESS
+// ==========================================
+
+async function showProgress() {
+
+    const container = $("clientProgress");
+
+    container.innerHTML = "Loading progress...";
+
+    const { data: assignments, error } = await db
+        .from("assignments")
+        .select("*");
+
+    if (error) throw error;
+
+    container.innerHTML = "";
+
+    for (const assignment of assignments || []) {
+
+        const { data: client } = await db
+            .from("profiles")
+            .select("email")
+            .eq("id", assignment.client_id)
+            .maybeSingle();
+
+        const { data: workout } = await db
+            .from("workouts")
+            .select("title")
+            .eq("id", assignment.workout_id)
+            .maybeSingle();
+
+        const { data: exercises } = await db
+            .from("exercises")
+            .select("id")
+            .eq("workout_id", assignment.workout_id);
+
+        const { data: completed } = await db
+            .from("completions")
+            .select("id")
+            .eq("assignment_id", assignment.id)
+            .eq("week_start", getWeekStart())
+            .eq("completed", true);
+
+        const total = exercises?.length || 0;
+        const done = completed?.length || 0;
+
+        const div = document.createElement("div");
+        div.className = "exercise";
+
+        const title = document.createElement("strong");
+        title.textContent = client?.email || "Client";
+
+        const detail = document.createElement("p");
+        detail.className = "muted";
+
+        detail.textContent =
+            (workout?.title || "Workout") +
+            " — " + done + "/" + total + " completed this week";
+
+        div.append(title, detail);
+        container.append(div);
+
+    }
+
+}
+
+
+// ==========================================
+// CLIENT DASHBOARD
+// ==========================================
+
+async function loadClient() {
+
+    await loadWeeklyPlan();
+
+    const container = $("myWorkouts");
+
+    container.innerHTML = "Loading workouts...";
+
+    const { data: assignments, error } = await db
+        .from("assignments")
+        .select("*")
+        .eq("client_id", user.id);
+
+    if (error) throw error;
+
+    container.innerHTML = "";
+
+    if (!assignments || assignments.length === 0) {
+
+        container.textContent =
+            "You don't have any workouts assigned yet.";
+
+        return;
+
+    }
+
+    for (const assignment of assignments) {
+
+        const { data: workout, error: workoutError } = await db
+            .from("workouts")
+            .select("title")
+            .eq("id", assignment.workout_id)
+            .maybeSingle();
+
+        if (workoutError) throw workoutError;
+
+        const { data: exercises, error: exerciseError } = await db
+            .from("exercises")
+            .select("*")
+            .eq("workout_id", assignment.workout_id);
+
+        if (exerciseError) throw exerciseError;
+
+        // Load only this week's progress.
+
+        const { data: completions, error: completionError } = await db
+            .from("completions")
+            .select("*")
+            .eq("assignment_id", assignment.id)
+            .eq("week_start", getWeekStart());
+
+        if (completionError) throw completionError;
+
+        const completedIds = new Set(
+            (completions || [])
+                .filter(c => c.completed)
+                .map(c => c.exercise_id)
+        );
+
+        const card = document.createElement("div");
+        card.className = "panel";
+
+        const title = document.createElement("h2");
+        title.textContent = workout?.title || "Workout";
+
+        card.append(title);
+
+        const total = exercises?.length || 0;
+
+        for (const exercise of exercises || []) {
+
+            const row = document.createElement("div");
+            row.className = "exercise";
+
+            const label = document.createElement("label");
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = completedIds.has(exercise.id);
+
+            const text = document.createElement("span");
+
+            text.textContent =
+                exercise.name + " — " +
+                exercise.sets + " sets × " +
+                exercise.reps;
+
+            if (checkbox.checked) {
+                text.classList.add("done");
+            }
+
+            checkbox.onchange = async () => {
+
+                checkbox.disabled = true;
+
+                const { error } = await db
+                    .from("completions")
+                    .upsert({
+                        assignment_id: assignment.id,
+                        exercise_id: exercise.id,
+                        completed: checkbox.checked,
+                        week_start: getWeekStart()
+                    }, {
+                        onConflict: "assignment_id,exercise_id,week_start"
+                    });
+
+                if (error) {
+
+                    alert(showError(error));
+
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.disabled = false;
+
+                    return;
+
+                }
+
+                await loadClient();
+
+            };
+
+            label.append(checkbox, text);
+            row.append(label);
+            card.append(row);
+
+        }
+
+        const done = exercises?.filter(e =>
+            completedIds.has(e.id)
+        ).length || 0;
+
+        const percentage = total
+            ? Math.round(done / total * 100)
+            : 0;
+
+        const progressText = document.createElement("p");
+        progressText.className = "muted";
+
+        progressText.textContent =
+            done + "/" + total +
+            " exercises completed this week — " +
+            percentage + "%";
+
+        const bg = document.createElement("div");
+        bg.className = "progress-bg";
+
+        const bar = document.createElement("div");
+        bar.className = "progress";
+        bar.style.width = percentage + "%";
+
+        bg.append(bar);
+        card.append(bg, progressText);
+        container.append(card);
+
+    }
+
+}
+
+
+// ==========================================
+// BUTTON EVENTS
+// ==========================================
+
+$("loginBtn").addEventListener("click", login);
+$("registerBtn").addEventListener("click", register);
+$("logout").addEventListener("click", logout);
+$("createWorkoutBtn").addEventListener("click", createWorkout);
+$("addExerciseBtn").addEventListener("click", addExercise);
+$("assignWorkoutBtn").addEventListener("click", assignWorkout);
+
+$("saveScheduleBtn").addEventListener("click", () => {
+    saveTrainingDay(false);
+});
+
+$("restDayBtn").addEventListener("click", () => {
+    saveTrainingDay(true);
+});
+
+
+// ==========================================
+// RESTORE SESSION
+// ==========================================
+
+async function startApp() {
+
+    const { data, error } = await db.auth.getSession();
+
+    if (error) {
+        showMessage("authMessage", showError(error));
+        return;
+    }
+
+    if (data.session) {
+        await loadApp();
+    }
+
+}
+
+db.auth.onAuthStateChange((event, session) => {
+
+    if (event === "SIGNED_OUT") {
+
+        user = null;
+        profile = null;
+
+        $("dashboard").classList.add("hidden");
+        $("loginSection").classList.remove("hidden");
+        $("logout").classList.add("hidden");
+        $("coachPanel").classList.add("hidden");
+        $("clientPanel").classList.add("hidden");
+
+    }
+
+});
+
+startApp();
+
+</script>
+
+</body>
+</html>
