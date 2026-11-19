@@ -33,7 +33,7 @@ header {
 .logo span { color: #a3e635; }
 
 .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 40px auto;
     padding: 20px;
 }
@@ -122,6 +122,34 @@ button {
     border-radius: 10px;
 }
 
+.day-card {
+    background: #252b2f;
+    padding: 16px;
+    margin: 10px 0;
+    border-radius: 9px;
+    border-left: 4px solid #a3e635;
+}
+
+.day-card h3 {
+    margin-top: 0;
+    color: #a3e635;
+}
+
+.rest-day {
+    border-left-color: #92999e;
+}
+
+.schedule-item {
+    margin: 8px 0;
+    padding: 12px;
+    background: #191d20;
+    border-radius: 8px;
+}
+
+.schedule-item button {
+    margin-top: 8px;
+}
+
 </style>
 </head>
 
@@ -134,123 +162,185 @@ button {
 
 <div class="container">
 
-    <!-- LOGIN -->
+<!-- LOGIN -->
 
-    <section id="loginSection">
+<section id="loginSection">
 
-        <h1>WELCOME.</h1>
-        <p class="subtitle">Your calisthenics journey starts here.</p>
+    <h1>WELCOME.</h1>
+    <p class="subtitle">Your calisthenics journey starts here.</p>
+
+    <div class="panel">
+
+        <h2>Login / Register</h2>
+
+        <input id="email" type="email" placeholder="Email">
+
+        <input id="password" type="password" placeholder="Password">
+
+        <button id="loginBtn">LOGIN</button>
+
+        <button id="registerBtn" class="secondary">
+            CREATE ACCOUNT
+        </button>
+
+        <p id="authMessage" class="muted"></p>
+
+    </div>
+
+</section>
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="hidden">
+
+    <h1 id="welcome">DASHBOARD</h1>
+
+    <p id="roleText" class="subtitle"></p>
+
+    <p id="dashboardMessage" class="error"></p>
+
+
+    <!-- COACH DASHBOARD -->
+
+    <section id="coachPanel" class="hidden">
 
         <div class="panel">
 
-            <h2>Login / Register</h2>
+            <h2>Create Workout</h2>
 
-            <input id="email" type="email" placeholder="Email">
+            <input id="workoutTitle" placeholder="Workout name">
 
-            <input id="password" type="password"
-                   placeholder="Password">
-
-            <button id="loginBtn">LOGIN</button>
-
-            <button id="registerBtn" class="secondary">
-                CREATE ACCOUNT
+            <button id="createWorkoutBtn">
+                CREATE WORKOUT
             </button>
 
-            <p id="authMessage" class="muted"></p>
+        </div>
+
+
+        <div class="panel">
+
+            <h2>Add Exercise</h2>
+
+            <select id="workoutSelect"></select>
+
+            <input id="exerciseName" placeholder="Exercise name">
+
+            <input id="sets" type="number" min="1" placeholder="Sets">
+
+            <input id="reps" placeholder="Reps (e.g. 12 or 30 sec)">
+
+            <button id="addExerciseBtn">
+                ADD EXERCISE
+            </button>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>Assign Workout To Client</h2>
+
+            <select id="clientSelect"></select>
+
+            <select id="assignWorkout"></select>
+
+            <button id="assignWorkoutBtn">
+                ASSIGN WORKOUT
+            </button>
+
+        </div>
+
+
+        <!-- WEEKLY PLANNER -->
+
+        <div class="panel">
+
+            <h2>Weekly Training Planner</h2>
+
+            <p class="muted">
+                Create a weekly workout schedule for your clients.
+            </p>
+
+            <select id="scheduleClient">
+                <option value="">Select client</option>
+            </select>
+
+            <select id="scheduleDay">
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+                <option value="7">Sunday</option>
+            </select>
+
+            <select id="scheduleWorkout">
+                <option value="">Select workout</option>
+            </select>
+
+            <button id="restDayBtn" class="secondary">
+                SET REST DAY
+            </button>
+
+            <button id="saveScheduleBtn">
+                SAVE TRAINING DAY
+            </button>
+
+            <p id="scheduleMessage" class="muted"></p>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>Client Weekly Schedules</h2>
+
+            <div id="coachSchedules"></div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>Client Progress</h2>
+
+            <div id="clientProgress"></div>
 
         </div>
 
     </section>
 
 
-    <!-- DASHBOARD -->
+    <!-- CLIENT DASHBOARD -->
 
-    <section id="dashboard" class="hidden">
+    <section id="clientPanel" class="hidden">
 
-        <h1 id="welcome">DASHBOARD</h1>
+        <div class="panel">
 
-        <p id="roleText" class="subtitle"></p>
+            <h2>MY WEEKLY PLAN</h2>
 
-        <p id="dashboardMessage" class="error"></p>
+            <p class="muted">
+                Your coach's weekly training schedule.
+            </p>
 
+            <div id="weeklyPlan"></div>
 
-        <!-- COACH -->
-
-        <section id="coachPanel" class="hidden">
-
-            <div class="panel">
-
-                <h2>Create Workout</h2>
-
-                <input id="workoutTitle"
-                       placeholder="Workout name">
-
-                <button id="createWorkoutBtn">
-                    CREATE WORKOUT
-                </button>
-
-            </div>
+        </div>
 
 
-            <div class="panel">
-
-                <h2>Add Exercise</h2>
-
-                <select id="workoutSelect"></select>
-
-                <input id="exerciseName"
-                       placeholder="Exercise name">
-
-                <input id="sets" type="number"
-                       min="1" placeholder="Sets">
-
-                <input id="reps"
-                       placeholder="Reps (e.g. 12 or 30 sec)">
-
-                <button id="addExerciseBtn">
-                    ADD EXERCISE
-                </button>
-
-            </div>
-
-
-            <div class="panel">
-
-                <h2>Assign Workout To Client</h2>
-
-                <select id="clientSelect"></select>
-
-                <select id="assignWorkout"></select>
-
-                <button id="assignWorkoutBtn">
-                    ASSIGN WORKOUT
-                </button>
-
-            </div>
-
-
-            <div class="panel">
-
-                <h2>Client Progress</h2>
-
-                <div id="clientProgress"></div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CLIENT -->
-
-        <section id="clientPanel" class="hidden">
+        <div class="panel">
 
             <h2>MY WORKOUTS</h2>
 
             <div id="myWorkouts"></div>
 
-        </section>
+        </div>
 
     </section>
+
+</section>
 
 </div>
 
@@ -280,28 +370,42 @@ const db = window.supabase.createClient(
 let user = null;
 let profile = null;
 let workouts = [];
-
 let loading = false;
 
-
-// ==========================================
-// ELEMENTS
-// ==========================================
+const dayNames = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+];
 
 const $ = id => document.getElementById(id);
 
+
+// ==========================================
+// MESSAGES
+// ==========================================
+
 function showMessage(id, text, type = "error") {
+
     $(id).textContent = text;
+
     $(id).className = type;
+
 }
 
 function showError(error) {
+
     return [
         error.message || "Unknown error",
         error.code ? "Code: " + error.code : "",
         error.details || "",
         error.hint || ""
     ].filter(Boolean).join("\n");
+
 }
 
 
@@ -368,14 +472,19 @@ async function register() {
     }
 
     if (data.session) {
+
         showMessage("authMessage", "Account created!", "success");
+
         await loadApp();
+
     } else {
+
         showMessage(
             "authMessage",
             "Account created! Check your email to confirm your account, then log in.",
             "success"
         );
+
     }
 
 }
@@ -418,8 +527,6 @@ async function loadApp() {
 
     try {
 
-        showMessage("dashboardMessage", "");
-
         const { data, error: authError } =
             await db.auth.getUser();
 
@@ -433,10 +540,9 @@ async function loadApp() {
             $("loginSection").classList.remove("hidden");
 
             return;
+
         }
 
-
-        // LOAD PROFILE
 
         const { data: p, error } = await db
             .from("profiles")
@@ -444,23 +550,17 @@ async function loadApp() {
             .eq("id", user.id)
             .maybeSingle();
 
-        if (error) {
-            throw error;
-        }
+        if (error) throw error;
 
         if (!p) {
-            throw new Error(
-                "Your account exists, but no matching profile was found. Check your profiles table and profile creation trigger."
-            );
+            throw new Error("No matching profile found.");
         }
 
         profile = p;
-        console.log("LOGGED IN USER:", user.email);
-console.log("USER ID:", user.id);
-console.log("PROFILE ROLE:", profile.role);
 
+        console.log("Logged in:", user.email);
+        console.log("Role:", profile.role);
 
-        // SHOW DASHBOARD
 
         $("loginSection").classList.add("hidden");
         $("dashboard").classList.remove("hidden");
@@ -492,14 +592,14 @@ console.log("PROFILE ROLE:", profile.role);
 
     } catch (error) {
 
-        console.error("Application error:", error);
+        console.error(error);
 
         $("dashboard").classList.add("hidden");
         $("loginSection").classList.remove("hidden");
 
         showMessage(
             "authMessage",
-            "ERROR LOADING PROFILE:\n" + showError(error)
+            "ERROR:\n" + showError(error)
         );
 
     } finally {
@@ -512,7 +612,7 @@ console.log("PROFILE ROLE:", profile.role);
 
 
 // ==========================================
-// LOAD COACH DASHBOARD
+// COACH DASHBOARD
 // ==========================================
 
 async function loadCoach() {
@@ -528,6 +628,8 @@ async function loadCoach() {
 
     $("workoutSelect").innerHTML = "";
     $("assignWorkout").innerHTML = "";
+    $("scheduleWorkout").innerHTML =
+        '<option value="">Select workout</option>';
 
     workouts.forEach(workout => {
 
@@ -536,6 +638,10 @@ async function loadCoach() {
         );
 
         $("assignWorkout").add(
+            new Option(workout.title, workout.id)
+        );
+
+        $("scheduleWorkout").add(
             new Option(workout.title, workout.id)
         );
 
@@ -550,6 +656,8 @@ async function loadCoach() {
     if (clientError) throw clientError;
 
     $("clientSelect").innerHTML = "";
+    $("scheduleClient").innerHTML =
+        '<option value="">Select client</option>';
 
     (clients || []).forEach(client => {
 
@@ -557,9 +665,15 @@ async function loadCoach() {
             new Option(client.email, client.id)
         );
 
+        $("scheduleClient").add(
+            new Option(client.email, client.id)
+        );
+
     });
 
     await showProgress();
+
+    await loadCoachSchedules();
 
 }
 
@@ -672,6 +786,228 @@ async function assignWorkout() {
 
 
 // ==========================================
+// SAVE WEEKLY TRAINING DAY
+// ==========================================
+
+async function saveTrainingDay(restDay = false) {
+
+    const clientId = $("scheduleClient").value;
+
+    const day = Number($("scheduleDay").value);
+
+    const workoutId = restDay
+        ? null
+        : $("scheduleWorkout").value;
+
+    if (!clientId) {
+        alert("Select a client.");
+        return;
+    }
+
+    if (!restDay && !workoutId) {
+        alert("Select a workout.");
+        return;
+    }
+
+    const { error } = await db
+        .from("training_schedule")
+        .upsert({
+            coach_id: user.id,
+            client_id: clientId,
+            day_of_week: day,
+            workout_id: workoutId,
+            is_rest_day: restDay
+        }, {
+            onConflict: "client_id,day_of_week"
+        });
+
+    if (error) {
+        alert(showError(error));
+        return;
+    }
+
+    showMessage(
+        "scheduleMessage",
+        "Training schedule saved!",
+        "success"
+    );
+
+    await loadCoachSchedules();
+
+}
+
+
+// ==========================================
+// COACH WEEKLY SCHEDULES
+// ==========================================
+
+async function loadCoachSchedules() {
+
+    const container = $("coachSchedules");
+
+    container.innerHTML = "Loading schedules...";
+
+    const { data: schedules, error } = await db
+        .from("training_schedule")
+        .select("*")
+        .eq("coach_id", user.id)
+        .order("day_of_week");
+
+    if (error) throw error;
+
+    container.innerHTML = "";
+
+    if (!schedules || schedules.length === 0) {
+
+        container.textContent = "No schedules created yet.";
+
+        return;
+
+    }
+
+    for (const schedule of schedules) {
+
+        const { data: client } = await db
+            .from("profiles")
+            .select("email")
+            .eq("id", schedule.client_id)
+            .maybeSingle();
+
+        let workoutName = "Rest Day";
+
+        if (!schedule.is_rest_day) {
+
+            const { data: workout } = await db
+                .from("workouts")
+                .select("title")
+                .eq("id", schedule.workout_id)
+                .maybeSingle();
+
+            workoutName = workout?.title || "Workout";
+
+        }
+
+        const card = document.createElement("div");
+
+        card.className = "schedule-item";
+
+        const title = document.createElement("strong");
+
+        title.textContent =
+            dayNames[schedule.day_of_week - 1] +
+            " — " + workoutName;
+
+        const clientText = document.createElement("p");
+
+        clientText.className = "muted";
+
+        clientText.textContent =
+            client?.email || "Client";
+
+        const deleteButton = document.createElement("button");
+
+        deleteButton.textContent = "REMOVE";
+
+        deleteButton.className = "secondary";
+
+        deleteButton.onclick = async () => {
+
+            if (!confirm("Remove this scheduled day?")) return;
+
+            const { error } = await db
+                .from("training_schedule")
+                .delete()
+                .eq("id", schedule.id);
+
+            if (error) {
+                alert(showError(error));
+                return;
+            }
+
+            await loadCoachSchedules();
+
+        };
+
+        card.append(title, clientText, deleteButton);
+
+        container.append(card);
+
+    }
+
+}
+
+
+// ==========================================
+// CLIENT WEEKLY PLAN
+// ==========================================
+
+async function loadWeeklyPlan() {
+
+    const container = $("weeklyPlan");
+
+    container.innerHTML = "Loading weekly plan...";
+
+    const { data: schedules, error } = await db
+        .from("training_schedule")
+        .select("*")
+        .eq("client_id", user.id)
+        .order("day_of_week");
+
+    if (error) throw error;
+
+    container.innerHTML = "";
+
+    for (let day = 1; day <= 7; day++) {
+
+        const schedule = schedules?.find(
+            s => s.day_of_week === day
+        );
+
+        const card = document.createElement("div");
+
+        card.className = "day-card";
+
+        const heading = document.createElement("h3");
+
+        heading.textContent = dayNames[day - 1];
+
+        const detail = document.createElement("p");
+
+        if (!schedule) {
+
+            detail.textContent = "No workout scheduled";
+
+        } else if (schedule.is_rest_day) {
+
+            detail.textContent = "REST DAY";
+
+            card.classList.add("rest-day");
+
+        } else {
+
+            const { data: workout, error: workoutError } = await db
+                .from("workouts")
+                .select("title")
+                .eq("id", schedule.workout_id)
+                .maybeSingle();
+
+            if (workoutError) throw workoutError;
+
+            detail.textContent =
+                workout?.title || "Workout";
+
+        }
+
+        card.append(heading, detail);
+
+        container.append(card);
+
+    }
+
+}
+
+
+// ==========================================
 // CLIENT PROGRESS
 // ==========================================
 
@@ -718,12 +1054,15 @@ async function showProgress() {
         const done = completed?.length || 0;
 
         const div = document.createElement("div");
+
         div.className = "exercise";
 
         const title = document.createElement("strong");
+
         title.textContent = client?.email || "Client";
 
         const detail = document.createElement("p");
+
         detail.className = "muted";
 
         detail.textContent =
@@ -731,6 +1070,7 @@ async function showProgress() {
             " — " + done + "/" + total + " completed";
 
         div.append(title, detail);
+
         container.append(div);
 
     }
@@ -743,6 +1083,8 @@ async function showProgress() {
 // ==========================================
 
 async function loadClient() {
+
+    await loadWeeklyPlan();
 
     const container = $("myWorkouts");
 
@@ -763,8 +1105,8 @@ async function loadClient() {
             "You don't have any workouts assigned yet.";
 
         return;
-    }
 
+    }
 
     for (const assignment of assignments) {
 
@@ -779,8 +1121,7 @@ async function loadClient() {
         const { data: exercises, error: exerciseError } = await db
             .from("exercises")
             .select("*")
-            .eq("workout_id", assignment.workout_id)
-            .order("position");
+            .eq("workout_id", assignment.workout_id);
 
         if (exerciseError) throw exerciseError;
 
@@ -791,7 +1132,6 @@ async function loadClient() {
 
         if (completionError) throw completionError;
 
-
         const completedIds = new Set(
             (completions || [])
                 .filter(c => c.completed)
@@ -799,19 +1139,21 @@ async function loadClient() {
         );
 
         const card = document.createElement("div");
+
         card.className = "panel";
 
         const title = document.createElement("h2");
+
         title.textContent = workout?.title || "Workout";
 
         card.append(title);
-
 
         const total = exercises?.length || 0;
 
         for (const exercise of exercises || []) {
 
             const row = document.createElement("div");
+
             row.className = "exercise";
 
             const label = document.createElement("label");
@@ -819,6 +1161,7 @@ async function loadClient() {
             const checkbox = document.createElement("input");
 
             checkbox.type = "checkbox";
+
             checkbox.checked = completedIds.has(exercise.id);
 
             const text = document.createElement("span");
@@ -845,9 +1188,13 @@ async function loadClient() {
                     });
 
                 if (error) {
+
                     alert(showError(error));
+
                     checkbox.checked = !checkbox.checked;
+
                     return;
+
                 }
 
                 await loadClient();
@@ -855,11 +1202,12 @@ async function loadClient() {
             };
 
             label.append(checkbox, text);
+
             row.append(label);
+
             card.append(row);
 
         }
-
 
         const done = exercises?.filter(e =>
             completedIds.has(e.id)
@@ -878,12 +1226,14 @@ async function loadClient() {
             " exercises completed — " +
             percentage + "%";
 
-
         const bg = document.createElement("div");
+
         bg.className = "progress-bg";
 
         const bar = document.createElement("div");
+
         bar.className = "progress";
+
         bar.style.width = percentage + "%";
 
         bg.append(bar);
@@ -913,9 +1263,17 @@ $("addExerciseBtn").addEventListener("click", addExercise);
 
 $("assignWorkoutBtn").addEventListener("click", assignWorkout);
 
+$("saveScheduleBtn").addEventListener("click", () => {
+    saveTrainingDay(false);
+});
+
+$("restDayBtn").addEventListener("click", () => {
+    saveTrainingDay(true);
+});
+
 
 // ==========================================
-// RESTORE EXISTING SESSION
+// RESTORE SESSION
 // ==========================================
 
 async function startApp() {
@@ -923,12 +1281,17 @@ async function startApp() {
     const { data, error } = await db.auth.getSession();
 
     if (error) {
+
         showMessage("authMessage", showError(error));
+
         return;
+
     }
 
     if (data.session) {
+
         await loadApp();
+
     }
 
 }
@@ -941,7 +1304,9 @@ db.auth.onAuthStateChange((event, session) => {
         profile = null;
 
         $("dashboard").classList.add("hidden");
+
         $("loginSection").classList.remove("hidden");
+
         $("logout").classList.add("hidden");
 
     }
