@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CALISTHENICS | Workout Planner</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #101214;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    padding: 25px 8%;
+    border-bottom: 1px solid #292d30;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: #a3e635;
+}
+
+header p {
+    color: #a3e635;
+    font-size: 13px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #92999e;
+    margin-bottom: 35px;
+}
+
+.panel {
+    background: #191d20;
+    border: 1px solid #30363a;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+input, select {
+    background: #101214;
+    color: white;
+    border: 1px solid #363d42;
+    border-radius: 7px;
+    padding: 13px;
+    width: 100%;
+    margin-bottom: 12px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #a3e635;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 7px;
+    padding: 12px 18px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.primary {
+    background: #a3e635;
+    color: #101214;
+}
+
+.primary:hover {
+    background: #bef264;
+}
+
+.secondary {
+    background: #30383d;
+    color: white;
+}
+
+.danger {
+    background: #452528;
+    color: #ff8585;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.workout {
+    margin-bottom: 20px;
+}
+
+.workout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.exercise {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #22282c;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 12px;
+    gap: 10px;
+}
+
+.exercise label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.exercise input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #a3e635;
+    margin: 0;
+    cursor: pointer;
+}
+
+.exercise.completed {
+    opacity: 0.5;
+}
+
+.exercise.completed .exercise-name {
+    text-decoration: line-through;
+}
+
+.exercise-name {
+    font-weight: bold;
+}
+
+.exercise-details {
+    color: #92999e;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.progress-bg {
+    height: 8px;
+    background: #343b40;
+    border-radius: 10px;
+    margin-top: 18px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: #a3e635;
+    transition: width 0.3s;
+}
+
+.progress-text {
+    color: #a3e635;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.empty {
+    color: #858d92;
+    text-align: center;
+    padding: 25px;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    color: #656d72;
+    padding: 30px;
+    font-size: 12px;
+}
+
+@media(max-width:600px) {
+    h1 {
+        font-size: 29px;
+    }
+
+    header {
+        padding: 20px;
+    }
+
+    .container {
+        margin-top: 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">CALIS<span>THENICS.</span></div>
+    <p>WORKOUT PLANNER</p>
+</header>
+
+<div class="container">
+
+    <h1>BUILD YOUR WORKOUT.</h1>
+    <p class="subtitle">
+        Create workouts. Track progress. Get stronger.
+    </p>
+
+    <div class="panel">
+        <h2>Create a workout</h2>
+
+        <input id="workoutName"
+        placeholder="Workout name (e.g. Push Day)">
+
+        <button class="primary" onclick="createWorkout()">
+            + Create Workout
+        </button>
+    </div>
+
+    <div class="panel hidden" id="exercisePanel">
+
+        <h2>Add exercises</h2>
+
+        <select id="workoutSelect"></select>
+
+        <input id="exerciseName"
+        placeholder="Exercise name (e.g. Push-ups)">
+
+        <input id="exerciseSets"
+        type="number"
+        min="1"
+        placeholder="Number of sets">
+
+        <input id="exerciseReps"
+        placeholder="Reps or duration (e.g. 12 reps or 30 sec)">
+
+        <button class="primary" onclick="addExercise()">
+            + Add Exercise
+        </button>
+
+    </div>
+
+    <h2 style="margin-bottom:20px">YOUR WORKOUTS</h2>
+
+    <div id="workouts">
+        <div class="empty">
+            No workouts yet. Create your first workout above!
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    CALISTHENICS WORKOUT PLANNER
+</footer>
+
+<script>
+
+let workouts = JSON.parse(
+    localStorage.getItem("calisthenicsWorkouts")
+) || [];
+
+function save() {
+    localStorage.setItem(
+        "calisthenicsWorkouts",
+        JSON.stringify(workouts)
+    );
+}
+
+function createWorkout() {
+
+    const name = document.getElementById("workoutName").value.trim();
+
+    if (!name) {
+        alert("Please enter a workout name!");
+        return;
+    }
+
+    workouts.push({
+        id: Date.now(),
+        name: name,
+        exercises: []
+    });
+
+    document.getElementById("workoutName").value = "";
+
+    save();
+    render();
+}
+
+function addExercise() {
+
+    const id = Number(
+        document.getElementById("workoutSelect").value
+    );
+
+    const workout = workouts.find(w => w.id === id);
+
+    if (!workout) return;
+
+    const name = document.getElementById("exerciseName").value.trim();
+    const sets = document.getElementById("exerciseSets").value;
+    const reps = document.getElementById("exerciseReps").value.trim();
+
+    if (!name || !sets || !reps || Number(sets) < 1) {
+        alert("Please fill in all exercise details.");
+        return;
+    }
+
+    workout.exercises.push({
+        id: Date.now(),
+        name: name,
+        sets: sets,
+        reps: reps,
+        completed: false
+    });
+
+    document.getElementById("exerciseName").value = "";
+    document.getElementById("exerciseSets").value = "";
+    document.getElementById("exerciseReps").value = "";
+
+    save();
+    render();
+}
+
+function toggleExercise(workoutId, exerciseId) {
+
+    const workout = workouts.find(w => w.id === workoutId);
+    const exercise = workout.exercises.find(e => e.id === exerciseId);
+
+    exercise.completed = !exercise.completed;
+
+    save();
+    render();
+}
+
+function deleteExercise(workoutId, exerciseId) {
+
+    const workout = workouts.find(w => w.id === workoutId);
+
+    workout.exercises = workout.exercises.filter(
+        e => e.id !== exerciseId
+    );
+
+    save();
+    render();
+}
+
+function deleteWorkout(id) {
+
+    if (!confirm("Delete this workout?")) return;
+
+    workouts = workouts.filter(w => w.id !== id);
+
+    save();
+    render();
+}
+
+function resetWorkout(id) {
+
+    const workout = workouts.find(w => w.id === id);
+
+    workout.exercises.forEach(e => {
+        e.completed = false;
+    });
+
+    save();
+    render();
+}
+
+function render() {
+
+    const container = document.getElementById("workouts");
+    const select = document.getElementById("workoutSelect");
+    const exercisePanel = document.getElementById("exercisePanel");
+
+    container.innerHTML = "";
+    select.innerHTML = "";
+
+    exercisePanel.classList.toggle("hidden", workouts.length === 0);
+
+    workouts.forEach(workout => {
+
+        const option = document.createElement("option");
+        option.value = workout.id;
+        option.textContent = workout.name;
+        select.appendChild(option);
+
+        const completed = workout.exercises.filter(
+            e => e.completed
+        ).length;
+
+        const total = workout.exercises.length;
+
+        const percentage = total === 0
+            ? 0
+            : Math.round((completed / total) * 100);
+
+        const card = document.createElement("div");
+        card.className = "panel workout";
+
+        const title = document.createElement("h2");
+        title.textContent = workout.name;
+
+        const header = document.createElement("div");
+        header.className = "workout-header";
+
+        const actions = document.createElement("div");
+
+        const resetButton = document.createElement("button");
+        resetButton.className = "secondary";
+        resetButton.textContent = "Reset";
+        resetButton.onclick = () => resetWorkout(workout.id);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "danger";
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = () => deleteWorkout(workout.id);
+
+        actions.append(resetButton, deleteButton);
+        header.append(title, actions);
+        card.appendChild(header);
+
+        workout.exercises.forEach(exercise => {
+
+            const row = document.createElement("div");
+            row.className = "exercise";
+
+            if (exercise.completed) {
+                row.classList.add("completed");
+            }
+
+            const label = document.createElement("label");
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = exercise.completed;
+
+            checkbox.onchange = () => {
+                toggleExercise(workout.id, exercise.id);
+            };
+
+            const info = document.createElement("div");
+
+            const name = document.createElement("div");
+            name.className = "exercise-name";
+            name.textContent = exercise.name;
+
+            const details = document.createElement("div");
+            details.className = "exercise-details";
+            details.textContent =
+                exercise.sets + " sets × " + exercise.reps;
+
+            info.append(name, details);
+            label.append(checkbox, info);
+
+            const remove = document.createElement("button");
+            remove.className = "danger";
+            remove.textContent = "×";
+            remove.title = "Delete exercise";
+            remove.onclick = () => {
+                deleteExercise(workout.id, exercise.id);
+            };
+
+            row.append(label, remove);
+            card.appendChild(row);
+
+        });
+
+        const progressBg = document.createElement("div");
+        progressBg.className = "progress-bg";
+
+        const progress = document.createElement("div");
+        progress.className = "progress";
+        progress.style.width = percentage + "%";
+
+        progressBg.appendChild(progress);
+        card.appendChild(progressBg);
+
+        const progressText = document.createElement("div");
+        progressText.className = "progress-text";
+        progressText.textContent =
+            completed + " / " + total +
+            " exercises completed (" + percentage + "%)";
+
+        card.appendChild(progressText);
+
+        container.appendChild(card);
+
+    });
+
+    if (workouts.length === 0) {
+        container.innerHTML =
+            '<div class="empty">No workouts yet. Create your first workout above!</div>';
+    }
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
