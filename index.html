@@ -2,17 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CALISTHENICS | Coaching</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -22,10 +18,11 @@ body {
 }
 
 header {
-    padding: 25px 8%;
+    padding: 22px 8%;
     border-bottom: 1px solid #30363a;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
@@ -33,30 +30,23 @@ header {
     font-weight: 900;
 }
 
-.logo span {
-    color: #a3e635;
-}
+.logo span { color: #a3e635; }
 
 .container {
     max-width: 900px;
-    margin: 45px auto;
+    margin: 40px auto;
     padding: 20px;
 }
 
-h1 {
-    font-size: 35px;
-}
+h1 { font-size: 35px; }
 
-.subtitle {
-    color: #92999e;
-    margin-bottom: 35px;
-}
+.subtitle, .muted { color: #92999e; }
 
 .panel {
     background: #191d20;
     border: 1px solid #30363a;
     border-radius: 12px;
-    padding: 25px;
+    padding: 24px;
     margin-bottom: 20px;
 }
 
@@ -78,7 +68,7 @@ button {
     color: #101214;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 10px;
+    margin: 5px 3px;
 }
 
 .secondary {
@@ -86,28 +76,27 @@ button {
     color: white;
 }
 
-.danger {
-    background: #54272b;
-    color: white;
+.hidden { display: none !important; }
+
+.error {
+    color: #ff7777;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
+
+.success { color: #a3e635; }
 
 .exercise {
     background: #252b2f;
     padding: 15px;
     border-radius: 8px;
     margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
 }
 
 .exercise label {
     display: flex;
     align-items: center;
     gap: 12px;
-    flex: 1;
-    cursor: pointer;
 }
 
 .exercise input {
@@ -116,30 +105,21 @@ button {
 }
 
 .done {
-    opacity: 0.5;
     text-decoration: line-through;
+    opacity: .5;
 }
 
 .progress-bg {
     background: #343b40;
-    height: 8px;
+    height: 9px;
     border-radius: 10px;
-    margin-top: 15px;
+    margin-top: 12px;
 }
 
 .progress {
     background: #a3e635;
-    height: 8px;
+    height: 9px;
     border-radius: 10px;
-}
-
-.hidden {
-    display: none;
-}
-
-.muted {
-    color: #92999e;
-    font-size: 13px;
 }
 
 </style>
@@ -149,298 +129,428 @@ button {
 
 <header>
     <div class="logo">CALIS<span>THENICS.</span></div>
-    <button id="logout" class="secondary hidden"
-    onclick="logout()">LOG OUT</button>
+    <button id="logout" class="secondary hidden">LOG OUT</button>
 </header>
 
 <div class="container">
 
-<section id="loginSection">
+    <!-- LOGIN -->
 
-    <h1>WELCOME.</h1>
-    <p class="subtitle">Your calisthenics journey starts here.</p>
+    <section id="loginSection">
 
-    <div class="panel">
-
-        <h2>Login / Register</h2>
-
-        <input id="email" type="email" placeholder="Email">
-
-        <input id="password" type="password"
-        placeholder="Password">
-
-        <button onclick="login()">LOGIN</button>
-
-        <button class="secondary"
-        onclick="register()">CREATE ACCOUNT</button>
-
-        <p id="authMessage" class="muted"></p>
-
-    </div>
-
-</section>
-
-
-<section id="dashboard" class="hidden">
-
-    <h1 id="welcome">DASHBOARD</h1>
-    <p class="subtitle" id="roleText"></p>
-
-    <section id="coachPanel" class="hidden">
+        <h1>WELCOME.</h1>
+        <p class="subtitle">Your calisthenics journey starts here.</p>
 
         <div class="panel">
 
-            <h2>Create Workout</h2>
+            <h2>Login / Register</h2>
 
-            <input id="workoutTitle"
-            placeholder="Workout name">
+            <input id="email" type="email" placeholder="Email">
 
-            <button onclick="createWorkout()">
-                CREATE WORKOUT
+            <input id="password" type="password"
+                   placeholder="Password">
+
+            <button id="loginBtn">LOGIN</button>
+
+            <button id="registerBtn" class="secondary">
+                CREATE ACCOUNT
             </button>
 
-        </div>
-
-        <div class="panel">
-
-            <h2>Add Exercise</h2>
-
-            <select id="workoutSelect"></select>
-
-            <input id="exerciseName"
-            placeholder="Exercise name">
-
-            <input id="sets" type="number"
-            min="1" placeholder="Sets">
-
-            <input id="reps"
-            placeholder="Reps (e.g. 12 or 30 sec)">
-
-            <button onclick="addExercise()">
-                ADD EXERCISE
-            </button>
-
-        </div>
-
-        <div class="panel">
-
-            <h2>Assign Workout To Client</h2>
-
-            <select id="clientSelect"></select>
-
-            <select id="assignWorkout"></select>
-
-            <button onclick="assignWorkout()">
-                ASSIGN WORKOUT
-            </button>
-
-        </div>
-
-        <div class="panel">
-
-            <h2>Client Progress</h2>
-
-            <div id="clientProgress"></div>
+            <p id="authMessage" class="muted"></p>
 
         </div>
 
     </section>
 
 
-    <section id="clientPanel" class="hidden">
+    <!-- DASHBOARD -->
 
-        <h2>MY WORKOUTS</h2>
+    <section id="dashboard" class="hidden">
 
-        <div id="myWorkouts"></div>
+        <h1 id="welcome">DASHBOARD</h1>
+
+        <p id="roleText" class="subtitle"></p>
+
+        <p id="dashboardMessage" class="error"></p>
+
+
+        <!-- COACH -->
+
+        <section id="coachPanel" class="hidden">
+
+            <div class="panel">
+
+                <h2>Create Workout</h2>
+
+                <input id="workoutTitle"
+                       placeholder="Workout name">
+
+                <button id="createWorkoutBtn">
+                    CREATE WORKOUT
+                </button>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h2>Add Exercise</h2>
+
+                <select id="workoutSelect"></select>
+
+                <input id="exerciseName"
+                       placeholder="Exercise name">
+
+                <input id="sets" type="number"
+                       min="1" placeholder="Sets">
+
+                <input id="reps"
+                       placeholder="Reps (e.g. 12 or 30 sec)">
+
+                <button id="addExerciseBtn">
+                    ADD EXERCISE
+                </button>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h2>Assign Workout To Client</h2>
+
+                <select id="clientSelect"></select>
+
+                <select id="assignWorkout"></select>
+
+                <button id="assignWorkoutBtn">
+                    ASSIGN WORKOUT
+                </button>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h2>Client Progress</h2>
+
+                <div id="clientProgress"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLIENT -->
+
+        <section id="clientPanel" class="hidden">
+
+            <h2>MY WORKOUTS</h2>
+
+            <div id="myWorkouts"></div>
+
+        </section>
 
     </section>
-
-</section>
 
 </div>
 
 
 <script>
 
-// IMPORTANT: INSERT YOUR SUPABASE DETAILS HERE
+// ==========================================
+// SUPABASE CONFIGURATION
+// ==========================================
 
-const SUPABASE_URL = "https://uaxfxkkpfnxfgjdwilko.supabase.co";
+const SUPABASE_URL =
+"https://uaxfxkkpfnxfgjdwilko.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_faulfh5FiEqNlLSWgpFv_A_ZspjYk1z";
+const SUPABASE_KEY =
+"sb_publishable_faulfh5FiEqNlLSWgpFv_A_ZspjYk1z";
 
 const db = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
 
+
+// ==========================================
+// VARIABLES
+// ==========================================
+
 let user = null;
 let profile = null;
 let workouts = [];
 
+let loading = false;
+
+
+// ==========================================
+// ELEMENTS
+// ==========================================
+
+const $ = id => document.getElementById(id);
+
+function showMessage(id, text, type = "error") {
+    $(id).textContent = text;
+    $(id).className = type;
+}
+
+function showError(error) {
+    return [
+        error.message || "Unknown error",
+        error.code ? "Code: " + error.code : "",
+        error.details || "",
+        error.hint || ""
+    ].filter(Boolean).join("\n");
+}
+
+
+// ==========================================
+// LOGIN
+// ==========================================
 
 async function login() {
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = $("email").value.trim();
+    const password = $("password").value;
 
-    const {error} = await db.auth.signInWithPassword({
+    if (!email || !password) {
+        showMessage("authMessage", "Enter your email and password.");
+        return;
+    }
+
+    showMessage("authMessage", "Logging in...", "muted");
+
+    const { error } = await db.auth.signInWithPassword({
         email,
         password
     });
 
-    if(error) {
-        message(error.message);
+    if (error) {
+        showMessage("authMessage", showError(error));
         return;
     }
 
     await loadApp();
+
 }
 
 
+// ==========================================
+// REGISTER
+// ==========================================
+
 async function register() {
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = $("email").value.trim();
+    const password = $("password").value;
 
-    if(password.length < 8) {
-        message("Password must be at least 8 characters.");
+    if (!email || !password) {
+        showMessage("authMessage", "Enter your email and password.");
         return;
     }
 
-    const {error} = await db.auth.signUp({
+    if (password.length < 8) {
+        showMessage("authMessage", "Password must be at least 8 characters.");
+        return;
+    }
+
+    showMessage("authMessage", "Creating account...", "muted");
+
+    const { data, error } = await db.auth.signUp({
         email,
         password
     });
 
-    if(error) {
-        message(error.message);
+    if (error) {
+        showMessage("authMessage", showError(error));
         return;
     }
 
-    message("Account created! Check your email to confirm registration, then log in.");
+    if (data.session) {
+        showMessage("authMessage", "Account created!", "success");
+        await loadApp();
+    } else {
+        showMessage(
+            "authMessage",
+            "Account created! Check your email to confirm your account, then log in.",
+            "success"
+        );
+    }
+
 }
 
 
-function message(text) {
-    document.getElementById("authMessage").textContent = text;
-}
-
+// ==========================================
+// LOGOUT
+// ==========================================
 
 async function logout() {
 
-    await db.auth.signOut();
+    const { error } = await db.auth.signOut();
 
-    location.reload();
-
-}
-
-
-async function loadApp() {
-
-    const {data} = await db.auth.getUser();
-
-    user = data.user;
-
-    if(!user) return;
-
-    const {data: p, error} = await db
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
-
-    if(error || !p) {
-        alert("Could not load your profile.");
+    if (error) {
+        alert(showError(error));
         return;
     }
 
-    profile = p;
+    user = null;
+    profile = null;
 
-    document.getElementById("loginSection")
-        .classList.add("hidden");
+    $("dashboard").classList.add("hidden");
+    $("loginSection").classList.remove("hidden");
+    $("logout").classList.add("hidden");
+    $("coachPanel").classList.add("hidden");
+    $("clientPanel").classList.add("hidden");
 
-    document.getElementById("dashboard")
-        .classList.remove("hidden");
+}
 
-    document.getElementById("logout")
-        .classList.remove("hidden");
 
-    document.getElementById("welcome").textContent =
-        "WELCOME, " + user.email.split("@")[0].toUpperCase();
+// ==========================================
+// LOAD APPLICATION
+// ==========================================
 
-    if(profile.role === "coach") {
+async function loadApp() {
 
-        document.getElementById("roleText").textContent =
-            "COACH DASHBOARD";
+    if (loading) return;
 
-        document.getElementById("coachPanel")
-            .classList.remove("hidden");
+    loading = true;
 
-        await loadCoach();
+    try {
 
-    } else {
+        showMessage("dashboardMessage", "");
 
-        document.getElementById("roleText").textContent =
-            "YOUR TRAINING DASHBOARD";
+        const { data, error: authError } =
+            await db.auth.getUser();
 
-        document.getElementById("clientPanel")
-            .classList.remove("hidden");
+        if (authError) throw authError;
 
-        await loadClient();
+        user = data.user;
+
+        if (!user) {
+
+            $("dashboard").classList.add("hidden");
+            $("loginSection").classList.remove("hidden");
+
+            return;
+        }
+
+
+        // LOAD PROFILE
+
+        const { data: p, error } = await db
+            .from("profiles")
+            .select("id,email,role")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (error) {
+            throw error;
+        }
+
+        if (!p) {
+            throw new Error(
+                "Your account exists, but no matching profile was found. Check your profiles table and profile creation trigger."
+            );
+        }
+
+        profile = p;
+
+
+        // SHOW DASHBOARD
+
+        $("loginSection").classList.add("hidden");
+        $("dashboard").classList.remove("hidden");
+        $("logout").classList.remove("hidden");
+
+        $("welcome").textContent =
+            "WELCOME, " + user.email.split("@")[0].toUpperCase();
+
+
+        if (profile.role === "coach") {
+
+            $("roleText").textContent = "COACH DASHBOARD";
+
+            $("coachPanel").classList.remove("hidden");
+            $("clientPanel").classList.add("hidden");
+
+            await loadCoach();
+
+        } else {
+
+            $("roleText").textContent = "YOUR TRAINING DASHBOARD";
+
+            $("clientPanel").classList.remove("hidden");
+            $("coachPanel").classList.add("hidden");
+
+            await loadClient();
+
+        }
+
+    } catch (error) {
+
+        console.error("Application error:", error);
+
+        $("dashboard").classList.add("hidden");
+        $("loginSection").classList.remove("hidden");
+
+        showMessage(
+            "authMessage",
+            "ERROR LOADING PROFILE:\n" + showError(error)
+        );
+
+    } finally {
+
+        loading = false;
 
     }
 
 }
 
 
+// ==========================================
+// LOAD COACH DASHBOARD
+// ==========================================
+
 async function loadCoach() {
 
-    const {data: w, error} = await db
+    const { data: w, error } = await db
         .from("workouts")
         .select("*")
         .order("title");
 
-    if(error) {
-        alert(error.message);
-        return;
-    }
+    if (error) throw error;
 
     workouts = w || [];
 
-    const workoutSelect = document.getElementById("workoutSelect");
-    const assignSelect = document.getElementById("assignWorkout");
-
-    workoutSelect.innerHTML = "";
-    assignSelect.innerHTML = "";
+    $("workoutSelect").innerHTML = "";
+    $("assignWorkout").innerHTML = "";
 
     workouts.forEach(workout => {
 
-        const a = new Option(workout.title, workout.id);
-        const b = new Option(workout.title, workout.id);
+        $("workoutSelect").add(
+            new Option(workout.title, workout.id)
+        );
 
-        workoutSelect.add(a);
-        assignSelect.add(b);
+        $("assignWorkout").add(
+            new Option(workout.title, workout.id)
+        );
 
     });
 
 
-    const {data: clients, error: clientError} = await db
+    const { data: clients, error: clientError } = await db
         .from("profiles")
-        .select("*")
+        .select("id,email")
         .eq("role", "client");
 
-    if(clientError) {
-        alert(clientError.message);
-        return;
-    }
+    if (clientError) throw clientError;
 
-    const clientSelect = document.getElementById("clientSelect");
+    $("clientSelect").innerHTML = "";
 
-    clientSelect.innerHTML = "";
+    (clients || []).forEach(client => {
 
-    clients.forEach(client => {
-
-        clientSelect.add(
+        $("clientSelect").add(
             new Option(client.email, client.id)
         );
 
@@ -451,26 +561,32 @@ async function loadCoach() {
 }
 
 
+// ==========================================
+// CREATE WORKOUT
+// ==========================================
+
 async function createWorkout() {
 
-    const title = document.getElementById("workoutTitle").value.trim();
+    const title = $("workoutTitle").value.trim();
 
-    if(!title) {
+    if (!title) {
         alert("Enter a workout name.");
         return;
     }
 
-    const {error} = await db.from("workouts").insert({
-        title: title,
-        created_by: user.id
-    });
+    const { error } = await db
+        .from("workouts")
+        .insert({
+            title,
+            created_by: user.id
+        });
 
-    if(error) {
-        alert(error.message);
+    if (error) {
+        alert(showError(error));
         return;
     }
 
-    document.getElementById("workoutTitle").value = "";
+    $("workoutTitle").value = "";
 
     await loadCoach();
 
@@ -479,101 +595,117 @@ async function createWorkout() {
 }
 
 
+// ==========================================
+// ADD EXERCISE
+// ==========================================
+
 async function addExercise() {
 
-    const workoutId =
-        document.getElementById("workoutSelect").value;
+    const workoutId = $("workoutSelect").value;
+    const name = $("exerciseName").value.trim();
+    const sets = Number($("sets").value);
+    const reps = $("reps").value.trim();
 
-    const name =
-        document.getElementById("exerciseName").value.trim();
-
-    const sets =
-        Number(document.getElementById("sets").value);
-
-    const reps =
-        document.getElementById("reps").value.trim();
-
-    if(!workoutId || !name || !sets || sets < 1 || !reps) {
+    if (!workoutId || !name || !sets || !reps) {
         alert("Fill in all exercise details.");
         return;
     }
 
-    const {error} = await db.from("exercises").insert({
-        workout_id: workoutId,
-        name: name,
-        sets: sets,
-        reps: reps
-    });
+    const { error } = await db
+        .from("exercises")
+        .insert({
+            workout_id: workoutId,
+            name,
+            sets,
+            reps
+        });
 
-    if(error) {
-        alert(error.message);
+    if (error) {
+        alert(showError(error));
         return;
     }
 
-    document.getElementById("exerciseName").value = "";
-    document.getElementById("sets").value = "";
-    document.getElementById("reps").value = "";
+    $("exerciseName").value = "";
+    $("sets").value = "";
+    $("reps").value = "";
 
     alert("Exercise added!");
 
 }
 
 
+// ==========================================
+// ASSIGN WORKOUT
+// ==========================================
+
 async function assignWorkout() {
 
-    const clientId =
-        document.getElementById("clientSelect").value;
+    const clientId = $("clientSelect").value;
+    const workoutId = $("assignWorkout").value;
 
-    const workoutId =
-        document.getElementById("assignWorkout").value;
-
-    if(!clientId || !workoutId) {
+    if (!clientId || !workoutId) {
         alert("Select a client and workout.");
         return;
     }
 
-    const {error} = await db.from("assignments").insert({
-        workout_id: workoutId,
-        client_id: clientId,
-        assigned_by: user.id
-    });
+    const { error } = await db
+        .from("assignments")
+        .insert({
+            workout_id: workoutId,
+            client_id: clientId,
+            assigned_by: user.id
+        });
 
-    if(error) {
-        alert(error.message);
+    if (error) {
+        alert(showError(error));
         return;
     }
 
-    alert("Workout successfully assigned!");
+    alert("Workout assigned!");
 
     await showProgress();
 
 }
 
 
+// ==========================================
+// CLIENT PROGRESS
+// ==========================================
+
 async function showProgress() {
 
-    const {data: assignments, error} = await db
+    const container = $("clientProgress");
+
+    container.innerHTML = "Loading progress...";
+
+    const { data: assignments, error } = await db
         .from("assignments")
-        .select("id, client_id, workout_id, profiles(email), workouts(title)");
+        .select("*");
 
-    if(error) {
-        document.getElementById("clientProgress").textContent =
-            error.message;
-        return;
-    }
-
-    const container = document.getElementById("clientProgress");
+    if (error) throw error;
 
     container.innerHTML = "";
 
-    for(const assignment of assignments || []) {
+    for (const assignment of assignments || []) {
 
-        const {data: exercises} = await db
+        const { data: client } = await db
+            .from("profiles")
+            .select("email")
+            .eq("id", assignment.client_id)
+            .maybeSingle();
+
+        const { data: workout } = await db
+            .from("workouts")
+            .select("title")
+            .eq("id", assignment.workout_id)
+            .maybeSingle();
+
+        const { data: exercises } = await db
             .from("exercises")
             .select("id")
             .eq("workout_id", assignment.workout_id);
 
-        const {data: completed} = await db
+        const { data: completed } = await db
             .from("completions")
             .select("id")
             .eq("assignment_id", assignment.id)
@@ -585,18 +717,17 @@ async function showProgress() {
         const div = document.createElement("div");
         div.className = "exercise";
 
-        const info = document.createElement("div");
-
         const title = document.createElement("strong");
-        title.textContent = assignment.profiles.email;
+        title.textContent = client?.email || "Client";
 
         const detail = document.createElement("p");
         detail.className = "muted";
-        detail.textContent =
-            assignment.workouts.title + " — " + done + "/" + total + " completed";
 
-        info.append(title, detail);
-        div.append(info);
+        detail.textContent =
+            (workout?.title || "Workout") +
+            " — " + done + "/" + total + " completed";
+
+        div.append(title, detail);
         container.append(div);
 
     }
@@ -604,40 +735,59 @@ async function showProgress() {
 }
 
 
+// ==========================================
+// CLIENT DASHBOARD
+// ==========================================
+
 async function loadClient() {
 
-    const {data: assignments, error} = await db
+    const container = $("myWorkouts");
+
+    container.innerHTML = "Loading workouts...";
+
+    const { data: assignments, error } = await db
         .from("assignments")
-        .select("id, workout_id, workouts(title)")
+        .select("*")
         .eq("client_id", user.id);
 
-    const container = document.getElementById("myWorkouts");
+    if (error) throw error;
 
     container.innerHTML = "";
 
-    if(error) {
-        container.textContent = error.message;
-        return;
-    }
+    if (!assignments || assignments.length === 0) {
 
-    if(!assignments || assignments.length === 0) {
         container.textContent =
             "You don't have any workouts assigned yet.";
+
         return;
     }
 
-    for(const assignment of assignments) {
 
-        const {data: exercises} = await db
+    for (const assignment of assignments) {
+
+        const { data: workout, error: workoutError } = await db
+            .from("workouts")
+            .select("title")
+            .eq("id", assignment.workout_id)
+            .maybeSingle();
+
+        if (workoutError) throw workoutError;
+
+        const { data: exercises, error: exerciseError } = await db
             .from("exercises")
             .select("*")
             .eq("workout_id", assignment.workout_id)
             .order("position");
 
-        const {data: completions} = await db
+        if (exerciseError) throw exerciseError;
+
+        const { data: completions, error: completionError } = await db
             .from("completions")
             .select("*")
             .eq("assignment_id", assignment.id);
+
+        if (completionError) throw completionError;
+
 
         const completedIds = new Set(
             (completions || [])
@@ -649,17 +799,14 @@ async function loadClient() {
         card.className = "panel";
 
         const title = document.createElement("h2");
-        title.textContent = assignment.workouts.title;
+        title.textContent = workout?.title || "Workout";
 
         card.append(title);
 
+
         const total = exercises?.length || 0;
 
-        const done = exercises?.filter(e =>
-            completedIds.has(e.id)
-        ).length || 0;
-
-        for(const exercise of exercises || []) {
+        for (const exercise of exercises || []) {
 
             const row = document.createElement("div");
             row.className = "exercise";
@@ -667,6 +814,7 @@ async function loadClient() {
             const label = document.createElement("label");
 
             const checkbox = document.createElement("input");
+
             checkbox.type = "checkbox";
             checkbox.checked = completedIds.has(exercise.id);
 
@@ -674,15 +822,16 @@ async function loadClient() {
 
             text.textContent =
                 exercise.name + " — " +
-                exercise.sets + " sets × " + exercise.reps;
+                exercise.sets + " sets × " +
+                exercise.reps;
 
-            if(checkbox.checked) {
+            if (checkbox.checked) {
                 text.classList.add("done");
             }
 
             checkbox.onchange = async () => {
 
-                const {error} = await db
+                const { error } = await db
                     .from("completions")
                     .upsert({
                         assignment_id: assignment.id,
@@ -692,8 +841,9 @@ async function loadClient() {
                         onConflict: "assignment_id,exercise_id"
                     });
 
-                if(error) {
-                    alert(error.message);
+                if (error) {
+                    alert(showError(error));
+                    checkbox.checked = !checkbox.checked;
                     return;
                 }
 
@@ -707,15 +857,24 @@ async function loadClient() {
 
         }
 
+
+        const done = exercises?.filter(e =>
+            completedIds.has(e.id)
+        ).length || 0;
+
         const percentage = total
             ? Math.round(done / total * 100)
             : 0;
 
         const progressText = document.createElement("p");
+
         progressText.className = "muted";
+
         progressText.textContent =
-            done + "/" + total + " exercises completed — " +
+            done + "/" + total +
+            " exercises completed — " +
             percentage + "%";
+
 
         const bg = document.createElement("div");
         bg.className = "progress-bg";
@@ -727,6 +886,7 @@ async function loadClient() {
         bg.append(bar);
 
         card.append(bg, progressText);
+
         container.append(card);
 
     }
@@ -734,15 +894,58 @@ async function loadClient() {
 }
 
 
-// Restore login when the page is refreshed.
+// ==========================================
+// BUTTON EVENTS
+// ==========================================
+
+$("loginBtn").addEventListener("click", login);
+
+$("registerBtn").addEventListener("click", register);
+
+$("logout").addEventListener("click", logout);
+
+$("createWorkoutBtn").addEventListener("click", createWorkout);
+
+$("addExerciseBtn").addEventListener("click", addExercise);
+
+$("assignWorkoutBtn").addEventListener("click", assignWorkout);
+
+
+// ==========================================
+// RESTORE EXISTING SESSION
+// ==========================================
+
+async function startApp() {
+
+    const { data, error } = await db.auth.getSession();
+
+    if (error) {
+        showMessage("authMessage", showError(error));
+        return;
+    }
+
+    if (data.session) {
+        await loadApp();
+    }
+
+}
 
 db.auth.onAuthStateChange((event, session) => {
-    if(session) {
-        setTimeout(() => loadApp(), 0);
+
+    if (event === "SIGNED_OUT") {
+
+        user = null;
+        profile = null;
+
+        $("dashboard").classList.add("hidden");
+        $("loginSection").classList.remove("hidden");
+        $("logout").classList.add("hidden");
+
     }
+
 });
 
-loadApp();
+startApp();
 
 </script>
 
