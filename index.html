@@ -197,6 +197,18 @@ button:hover {
     opacity: 0.45;
 }
 
+.exercise-image {
+    display: block;
+    width: 100%;
+    max-width: 380px;
+    max-height: 280px;
+    object-fit: contain;
+    background: #111713;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 12px 0;
+}
+
 .progress-bg {
     background: #303b33;
     height: 11px;
@@ -312,6 +324,32 @@ button:hover {
             <button id="addExerciseBtn">ADD EXERCISE</button>
         </div>
 
+        <!-- EXERCISE IMAGE UPLOAD -->
+
+        <div class="panel">
+            <h2>Upload Exercise Picture</h2>
+            <p class="muted">
+                Choose an exercise and upload its picture.
+                Your clients will see the picture in their workouts.
+            </p>
+
+            <select id="exerciseImageSelect">
+                <option value="">Select exercise</option>
+            </select>
+
+            <input
+                id="exerciseImageFile"
+                type="file"
+                accept="image/*"
+            >
+
+            <button id="uploadExerciseImageBtn">
+                UPLOAD PICTURE
+            </button>
+
+            <p id="imageUploadMessage" class="muted"></p>
+        </div>
+
         <div class="panel">
             <h2>Assign Workout To Client</h2>
             <select id="clientSelect"></select>
@@ -389,9 +427,11 @@ button:hover {
 const SUPABASE_URL =
 "https://uaxfxkkpfnxfgjdwilko.supabase.co";
 
-// Replace this with your original publishable key.
+// Replace this placeholder with your existing publishable key.
+// Never put your service-role key in this file.
+
 const SUPABASE_KEY =
-"sb_publishable_faulfh5FiEqNlLSWgpFv_A_ZspjYk1z";
+"PASTE_YOUR_EXISTING_PUBLISHABLE_KEY_HERE";
 
 const db = window.supabase.createClient(
     SUPABASE_URL,
@@ -707,8 +747,161 @@ async function loadCoach() {
 
     });
 
+    await loadExerciseImageChoices();
     await showProgress();
     await loadCoachSchedules();
+
+}
+
+
+// ==========================================
+// LOAD EXERCISES FOR IMAGE UPLOAD
+// ==========================================
+
+async function loadExerciseImageChoices() {
+
+    const select = $("exerciseImageSelect");
+
+    select.innerHTML =
+        '<option value="">Select exercise</option>';
+
+    const { data: exercises, error } = await db
+        .from("exercises")
+        .select("id,name,workout_id")
+        .order("name");
+
+    if (error) throw error;
+
+    (exercises || []).forEach(exercise => {
+
+        const option = document.createElement("option");
+
+        option.value = exercise.id;
+        option.textContent = exercise.name;
+
+        select.append(option);
+
+    });
+
+}
+
+
+// ==========================================
+// UPLOAD EXERCISE PICTURE
+// ==========================================
+
+async function uploadExerciseImage() {
+
+    const exerciseId = $("exerciseImageSelect").value;
+    const file = $("exerciseImageFile").files[0];
+
+    if (!exerciseId) {
+        showMessage(
+            "imageUploadMessage",
+            "Please select an exercise."
+        );
+        return;
+    }
+
+    if (!file) {
+        showMessage(
+            "imageUploadMessage",
+            "Please choose an image."
+        );
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+        showMessage(
+            "imageUploadMessage",
+            "Please choose a valid image file."
+        );
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        showMessage(
+            "imageUploadMessage",
+            "Image must be smaller than 5 MB."
+        );
+        return;
+    }
+
+    showMessage(
+        "imageUploadMessage",
+        "Uploading picture...",
+        "muted"
+    );
+
+    $("uploadExerciseImageBtn").disabled = true;
+
+    try {
+
+        const extension = file.name.split(".").pop().toLowerCase();
+
+        const allowedExtensions = [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "gif"
+        ];
+
+        if (!allowedExtensions.includes(extension)) {
+            throw new Error(
+                "Please use a JPG, PNG, WEBP or GIF image."
+            );
+        }
+
+        const filePath =
+            user.id + "/" + crypto.randomUUID() + "." + extension;
+
+        const { error: uploadError } = await db.storage
+            .from("exercise-images")
+            .upload(filePath, file, {
+                cacheControl: "3600",
+                upsert: false
+            });
+
+        if (uploadError) throw uploadError;
+
+        const { data: publicData } = db.storage
+            .from("exercise-images")
+            .getPublicUrl(filePath);
+
+        const imageUrl = publicData.publicUrl;
+
+        const { error: updateError } = await db
+            .from("exercises")
+            .update({
+                image_url: imageUrl
+            })
+            .eq("id", exerciseId);
+
+        if (updateError) throw updateError;
+
+        showMessage(
+            "imageUploadMessage",
+            "Picture uploaded successfully!",
+            "success"
+        );
+
+        $("exerciseImageFile").value = "";
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "imageUploadMessage",
+            "Upload failed:\n" + showError(error)
+        );
+
+    } finally {
+
+        $("uploadExerciseImageBtn").disabled = false;
+
+    }
 
 }
 
@@ -780,6 +973,8 @@ async function addExercise() {
     $("exerciseName").value = "";
     $("sets").value = "";
     $("reps").value = "";
+
+    await loadExerciseImageChoices();
 
     alert("Exercise added!");
 
@@ -1172,6 +1367,26 @@ async function loadClient() {
             const row = document.createElement("div");
             row.className = "exercise";
 
+            const exerciseName = document.createElement("h3");
+            exerciseName.textContent = exercise.name;
+
+            row.append(exerciseName);
+
+            // SHOW EXERCISE PICTURE
+
+            if (exercise.image_url) {
+
+                const image = document.createElement("img");
+
+                image.src = exercise.image_url;
+                image.alt = exercise.name;
+                image.className = "exercise-image";
+                image.loading = "lazy";
+
+                row.append(image);
+
+            }
+
             const label = document.createElement("label");
 
             const checkbox = document.createElement("input");
@@ -1181,7 +1396,6 @@ async function loadClient() {
             const text = document.createElement("span");
 
             text.textContent =
-                exercise.name + " — " +
                 exercise.sets + " sets × " +
                 exercise.reps;
 
@@ -1267,6 +1481,11 @@ $("logout").addEventListener("click", logout);
 $("createWorkoutBtn").addEventListener("click", createWorkout);
 $("addExerciseBtn").addEventListener("click", addExercise);
 $("assignWorkoutBtn").addEventListener("click", assignWorkout);
+
+$("uploadExerciseImageBtn").addEventListener(
+    "click",
+    uploadExerciseImage
+);
 
 $("saveScheduleBtn").addEventListener("click", () => {
     saveTrainingDay(false);
