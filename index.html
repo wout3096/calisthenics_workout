@@ -197,6 +197,27 @@ button:hover {
     opacity: 0.45;
 }
 
+.exercise-image-toggle {
+    margin: 12px 0;
+    max-width: 400px;
+}
+
+.exercise-image-toggle summary {
+    display: inline-block;
+    cursor: pointer;
+    color: var(--green);
+    font-weight: 800;
+    padding: 10px 14px;
+    border: 1px solid #405044;
+    border-radius: 7px;
+    background: #29342d;
+    list-style-position: inside;
+}
+
+.exercise-image-toggle summary:hover {
+    background: #39483c;
+}
+
 .exercise-image {
     display: block;
     width: 100%;
@@ -431,7 +452,7 @@ const SUPABASE_URL =
 // Never put your service-role key in this file.
 
 const SUPABASE_KEY =
-"sb_publishable_faulfh5FiEqNlLSWgpFv_A_ZspjYk1z";
+"PASTE_YOUR_EXISTING_PUBLISHABLE_KEY_HERE";
 
 const db = window.supabase.createClient(
     SUPABASE_URL,
@@ -1372,18 +1393,24 @@ async function loadClient() {
 
             row.append(exerciseName);
 
-            // SHOW EXERCISE PICTURE
+            // FOLDABLE / UNFOLDABLE EXERCISE PICTURE
 
             if (exercise.image_url) {
 
-                const image = document.createElement("img");
+                const imageToggle = document.createElement("details");
+                imageToggle.className = "exercise-image-toggle";
 
+                const imageSummary = document.createElement("summary");
+                imageSummary.textContent = "Show exercise picture";
+
+                const image = document.createElement("img");
                 image.src = exercise.image_url;
                 image.alt = exercise.name;
                 image.className = "exercise-image";
                 image.loading = "lazy";
 
-                row.append(image);
+                imageToggle.append(imageSummary, image);
+                row.append(imageToggle);
 
             }
 
